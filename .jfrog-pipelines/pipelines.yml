@@ -1,0 +1,39 @@
+template: true
+valuesFilePath: ./values.yml
+
+resources:
+  {{ range $i, $e := until 1500 }}
+  - name: monitor_git_trigger{{$i}}
+    type: GitRepo
+    configuration:
+      path: {{.jfrog-pipelines.sourceRepository}}
+      gitProvider: git_int
+  {{ end }}
+
+pipelines:
+  - name: testgit
+    steps:
+      - name: basic_first
+        type: Bash
+        configuration:
+          runtime:
+            type: host
+        execution:
+          onExecute:
+            - echo hi
+      {{ range $i, $e := until 1500 }}
+      - name: basic{{$i}}
+        type: Bash
+        configuration:
+          runtime:
+            type: host
+          inputResources:
+            - name: monitor_git_trigger{{$i}}
+              trigger: true
+          inputSteps:
+            - name: basic_first
+        execution:
+          onExecute:
+            - echo hi
+            - echo "shashank"
+      {{ end }}
