@@ -36,4 +36,5 @@ pipelines:
           onExecute:
             - echo hi
             - echo "shashank"
+            - echo "testing commit 123"
       {{ end }}
