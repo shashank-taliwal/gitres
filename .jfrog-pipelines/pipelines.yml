@@ -2,7 +2,7 @@ template: true
 valuesFilePath: ./values.yml
 
 resources:
-  {{ range $i, $e := until 1500 }}
+  {{ range $i, $e := until 5000 }}
   - name: monitor_git_trigger{{$i}}
     type: GitRepo
     configuration:
@@ -21,7 +21,7 @@ pipelines:
         execution:
           onExecute:
             - echo hi
-      {{ range $i, $e := until 1500 }}
+      {{ range $i, $e := until 5000 }}
       - name: basic{{$i}}
         type: Bash
         configuration:
