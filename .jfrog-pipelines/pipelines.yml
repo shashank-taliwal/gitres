@@ -6,7 +6,7 @@ resources:
     type: GitRepo
     configuration:
       path: {{.jfrog-pipelines.sourceRepository}}
-      gitProvider: git_int
+      gitProvider: github
 pipelines:
   - name: testgit
     steps:
