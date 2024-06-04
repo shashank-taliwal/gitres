@@ -18,7 +18,7 @@ pipelines:
         execution:
           onExecute:
             - echo hi
-      - name: basic{{$i}}
+      - name: basic
         type: Bash
         configuration:
           inputResources:
