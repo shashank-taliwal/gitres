@@ -2,14 +2,11 @@ template: true
 valuesFilePath: ./values.yml
 
 resources:
-  {{ range $i, $e := until 5000 }}
-  - name: monitor_git_trigger{{$i}}
+  - name: monitor_git_trigger1
     type: GitRepo
     configuration:
       path: {{.jfrog-pipelines.sourceRepository}}
       gitProvider: git_int
-  {{ end }}
-
 pipelines:
   - name: testgit
     steps:
@@ -21,14 +18,11 @@ pipelines:
         execution:
           onExecute:
             - echo hi
-      {{ range $i, $e := until 5000 }}
       - name: basic{{$i}}
         type: Bash
         configuration:
-          runtime:
-            type: host
           inputResources:
-            - name: monitor_git_trigger{{$i}}
+            - name: monitor_git_trigger1
               trigger: true
           inputSteps:
             - name: basic_first
@@ -37,4 +31,6 @@ pipelines:
             - echo hi
             - echo "shashank"
             - echo "testing commit 123"
-      {{ end }}
+            - update_commit_status monitor_git_trigger1 --message "Github Pipeline Success"
+          onSuccess:
+            - update_commit_status monitor_git_trigger1 --message "Github Pipeline Success"
